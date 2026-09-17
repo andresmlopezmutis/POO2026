@@ -22,7 +22,7 @@ public class ElectronicWallet {
         }
         return false;
     }
-    public boolean setPayment(int payment, int balance){
+    public boolean setPayment(int payment){
         if(payment > 0 && payment <= balance && payment <= 500000){
             this.payment = payment;
             this.balance = this.balance - payment;
