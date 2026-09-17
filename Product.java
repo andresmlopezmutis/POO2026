@@ -6,9 +6,9 @@ public class Product {
 
     //constructor
     public Product(String name, double price, int stock){
-        setName(name);
-        setPrice(price);
-        setStock(stock);
+        if(!setName(name) || !setPrice(price) || !setStock(stock)){
+            throw new IllegalArgumentException("Datos invalidos para el producto");
+        }
     }
 
     public String getName(){

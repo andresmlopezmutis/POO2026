@@ -8,7 +8,7 @@ public class MediaPlayer {
         if(volume >= 0 && volume <=100){
             this.volume = volume;
         } else {
-            this.volume = 50;
+            throw new IllegalArgumentException("Volumen no válido");
         }
         this.playback_state = "stopped";
     }

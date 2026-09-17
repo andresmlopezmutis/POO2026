@@ -7,7 +7,9 @@ public class ElectronicWallet {
 
     //constructor
     public ElectronicWallet(String owner){
-        setOwner(owner);
+        if(!setOwner(owner)){
+            throw new IllegalArgumentException("Datos invalidos para la billetera");
+        }
         this.balance = 0;
     }
     public boolean setTop_ups(int top_up){

@@ -7,7 +7,7 @@ public class Thermometer {
         if (temperature >= -50 && temperature <= 100) {
             this.temperature = temperature;
         } else {
-            this.temperature = 0;
+            throw new IllegalArgumentException("Temperatura no válida");
         }
     }
 

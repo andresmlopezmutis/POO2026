@@ -6,9 +6,11 @@ public class BankAccount {
 
     //constructor
     public BankAccount(String account_number, String account_holder, double balance){
-        setAccountNumber(account_number);
-        setAccountHolder(account_holder);
-        setBalance(balance);
+        if(!setAccountNumber(account_number) ||
+           !setAccountHolder(account_holder) ||
+           !setBalance(balance)){
+            throw new IllegalArgumentException("Datos invalidos para la cuenta");
+        }
     }
     public boolean deposit(double deposit){
         if(deposit > 0){
