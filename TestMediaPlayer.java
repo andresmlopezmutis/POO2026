@@ -2,6 +2,11 @@ public class TestMediaPlayer {
 
     public static void main(String[] args) {
 
+        // Datos no válidos para el constructor
+        // MediaPlayer invalidPlayer = new MediaPlayer(
+        //         150
+        // );
+
         MediaPlayer player = new MediaPlayer(40);
 
         System.out.println("Volumen: " + player.getVolume());

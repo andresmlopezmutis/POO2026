@@ -2,6 +2,11 @@ public class TestElectronicWallet {
 
     public static void main(String[] args) {
 
+        // Datos no válidos para el constructor
+        // ElectronicWallet invalidWallet = new ElectronicWallet(
+        //         ""
+        // );
+
         ElectronicWallet wallet =
                 new ElectronicWallet("Andres");
 

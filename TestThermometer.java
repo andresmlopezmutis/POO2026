@@ -2,6 +2,11 @@ public class TestThermometer {
 
     public static void main(String[] args) {
 
+        // Datos no válidos para el constructor
+        // Thermometer invalidThermometer = new Thermometer(
+        //         150
+        // );
+
         Thermometer thermometer = new Thermometer(20);
 
         System.out.println("Initial temperature: "

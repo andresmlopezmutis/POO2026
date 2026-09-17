@@ -2,6 +2,13 @@ public class TestBankAccount {
 
     public static void main(String[] args) {
 
+        // Datos no válidos para el constructor
+        // BankAccount invalidAccount = new BankAccount(
+        //         "",
+        //         "Andres",
+        //         -1000
+        // );
+
         BankAccount account = new BankAccount(
                 "123456789",
                 "Andres",

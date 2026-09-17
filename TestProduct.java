@@ -2,6 +2,13 @@ public class TestProduct {
 
     public static void main(String[] args) {
 
+        // Datos no válidos para el constructor
+        // Product invalidProduct = new Product(
+        //         "",
+        //         -10.0,
+        //         -5
+        // );
+
         Product product = new Product("Laptop", 999.99, 100);
 
         System.out.println("Product: " + product.getName());
