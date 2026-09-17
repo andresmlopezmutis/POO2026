@@ -7,30 +7,42 @@ public class TestMediaPlayer {
         System.out.println("Volumen: " + player.getVolume());
         System.out.println("Reproduciendo: " + player.getPlaybackState());
 
-        player.play();
+        boolean result = player.play();
 
+        System.out.println("Resultado de reproducir: " + result);
         System.out.println("Reproduciendo: " + player.getPlaybackState());
 
         // Aumentar volumen
         for (int i = 0; i < 12; i++) {
-            player.increase_volume();
+            result = player.increase_volume();
+
+            if (!result) {
+                System.out.println("El volumen no puede ser superior a 100");
+            }
 
             System.out.println(
-                    "Volumen: " + player.getVolume()
+                    "Volumen: " + player.getVolume() +
+                    ", resultado: " + result
             );
         }
 
         // Disminuir volumen
         for (int i = 0; i < 22; i++) {
-            player.decrease_volume();
+            result = player.decrease_volume();
+
+            if (!result) {
+                System.out.println("El volumen no puede ser inferior a 0");
+            }
 
             System.out.println(
-                    "Volumen: " + player.getVolume()
+                    "Volumen: " + player.getVolume() +
+                    ", resultado: " + result
             );
         }
 
-        player.stop();
+        result = player.stop();
 
+        System.out.println("Resultado de detener: " + result);
         System.out.println(
                 "Reproduciendo: " + player.getPlaybackState()
         );

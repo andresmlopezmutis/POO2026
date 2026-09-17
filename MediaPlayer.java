@@ -12,29 +12,29 @@ public class MediaPlayer {
         }
         this.playback_state = "stopped";
     }
-    public void increase_volume(){
+    public boolean increase_volume(){
         if(volume + 5 <= 100){
             volume = volume + 5;
-            System.out.println(volume);
+            return true;
         }else {
-            System.out.println("El volumen no puede ser superior a 100");
+            return false;
         }
     }
-    public void decrease_volume(){
+    public boolean decrease_volume(){
         if(volume - 5 >= 0){
             volume = volume - 5;
-            System.out.println(volume);
+            return true;
         }else {
-            System.out.println("El volumen no puede ser inferior a 0");
+            return false;
         }
     }
-    public void play(){
+    public boolean play(){
         playback_state = "playing";
-        System.out.println("Reproduciendo");
+        return true;
     }
-    public void stop(){
+    public boolean stop(){
         playback_state = "stopped";
-        System.out.println("Reproducción detenida");
+        return true;
     }
     public int getVolume(){
         return volume;

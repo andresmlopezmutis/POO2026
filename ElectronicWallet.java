@@ -7,12 +7,8 @@ public class ElectronicWallet {
 
     //constructor
     public ElectronicWallet(String owner){
-        if(!owner.equals("")){
-            this.owner = owner;
-            this.balance = 0;
-        }else{
-            System.out.println("Dato inválido");
-        }
+        setOwner(owner);
+        this.balance = 0;
     }
     public boolean setTop_ups(int top_up){
         if(top_up > 0){
@@ -32,6 +28,14 @@ public class ElectronicWallet {
     }
     public String getOwner(){
         return owner;
+    }
+
+    public boolean setOwner(String owner){
+        if(owner == null || owner.isBlank()){
+            return false;
+        }
+        this.owner = owner;
+        return true;
     }
     public int getBalance(){
         return balance;

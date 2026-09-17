@@ -6,14 +6,9 @@ public class Product {
 
     //constructor
     public Product(String name, double price, int stock){
-        
-        if(name != "" && price > 0 && stock >= 0){
-            this.name = name;
-            this.price = price;
-            this.stock = stock;
-        } else {
-            System.out.println("Los datos ingresados no son válidos");
-        }
+        setName(name);
+        setPrice(price);
+        setStock(stock);
     }
 
     public String getName(){
@@ -29,7 +24,7 @@ public class Product {
     }
 
     public boolean setName(String name){
-        if (name != ""){
+        if (name != null && !name.isBlank()){
             this.name = name;
             return true;
         }
