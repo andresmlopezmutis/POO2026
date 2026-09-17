@@ -17,7 +17,6 @@ public class Thermometer {
     }
 
     // Modificar temperatura
-    // Retorna true si fue aceptada y false si fue rechazada
     public boolean setTemperature(double temperature) {
         if (temperature >= -50 && temperature <= 100) {
             this.temperature = temperature;

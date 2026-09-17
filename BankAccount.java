@@ -31,5 +31,4 @@ public class BankAccount {
     public double getBalance(){
         return this.balance;
     }
-
 }
