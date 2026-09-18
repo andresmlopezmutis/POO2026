@@ -11,14 +11,9 @@ public class TestThermometer {
             return;
         }
 
-        try {
-            float temperature = Float.parseFloat(input);
-            int status = thermometer.setTemperature(temperature);
-            showResult(thermometer, temperature, status);
-        } catch (NumberFormatException exception) {
-            JOptionPane.showMessageDialog(null,
-                    "Error: debe ingresar un número válido.");
-        }
+        float temperature = Float.parseFloat(input);
+        int status = thermometer.setTemperature(temperature);
+        showResult(thermometer, temperature, status);
     }
 
     private static void showResult(Thermometer thermometer, float temperature,
