@@ -1,47 +1,44 @@
+import javax.swing.JOptionPane;
+
 public class TestThermometer {
-
     public static void main(String[] args) {
-
-        // Datos no válidos para el constructor
-        // Thermometer invalidThermometer = new Thermometer(
-        //         150
-        // );
-
         Thermometer thermometer = new Thermometer(20);
 
-        System.out.println("Initial temperature: "
-                + thermometer.getTemperature() + " °C");
+        String input = JOptionPane.showInputDialog(null,
+                "Ingrese una temperatura entre -50 y 100 °C:");
 
-        // Valid temperature
-        boolean accepted = thermometer.setTemperature(35);
+        if (input == null) {
+            return;
+        }
 
-        System.out.println("\nAttempt: 35 °C");
-        System.out.println("Accepted: " + accepted);
-        System.out.println("Current temperature: "
-                + thermometer.getTemperature() + " °C");
+        try {
+            float temperature = Float.parseFloat(input);
+            int status = thermometer.setTemperature(temperature);
+            showResult(thermometer, temperature, status);
+        } catch (NumberFormatException exception) {
+            JOptionPane.showMessageDialog(null,
+                    "Error: debe ingresar un número válido.");
+        }
+    }
 
-        // Invalid temperature
-        accepted = thermometer.setTemperature(150);
+    private static void showResult(Thermometer thermometer, float temperature,
+            int status) {
+        String message;
 
-        System.out.println("\nAttempt: 150 °C");
-        System.out.println("Accepted: " + accepted);
-        System.out.println("Current temperature: "
-                + thermometer.getTemperature() + " °C");
+        if (status == 0) {
+            message = "Temperatura asignada correctamente.";
+        } else if (status == -1) {
+            message = "Error: la temperatura está por debajo del mínimo (-50 °C).";
+        } else if (status == -2) {
+            message = "Error: la temperatura está por encima del máximo (100 °C).";
+        } else {
+            message = "Error: estado desconocido.";
+        }
 
-        // Valid temperature
-        accepted = thermometer.setTemperature(-40);
-
-        System.out.println("\nAttempt: -40 °C");
-        System.out.println("Accepted: " + accepted);
-        System.out.println("Current temperature: "
-                + thermometer.getTemperature() + " °C");
-
-        // Invalid temperature
-        accepted = thermometer.setTemperature(-60);
-
-        System.out.println("\nAttempt: -60 °C");
-        System.out.println("Accepted: " + accepted);
-        System.out.println("Current temperature: "
-                + thermometer.getTemperature() + " °C");
+        JOptionPane.showMessageDialog(null,
+                "Intento: " + temperature + " °C\n"
+                        + message + "\n"
+                        + "Temperatura actual: " + thermometer.getTemperature()
+                        + " °C");
     }
 }

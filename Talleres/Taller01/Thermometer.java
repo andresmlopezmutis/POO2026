@@ -15,14 +15,15 @@ public class Thermometer {
     public double getTemperature() {
         return temperature;
     }
-
-    // Modificar temperatura
-    public boolean setTemperature(double temperature) {
-        if (temperature >= -50 && temperature <= 100) {
-            this.temperature = temperature;
-            return true;
+    
+    public int setTemperature(float newTemperature) {
+        if (newTemperature < -50) {
+            return -1;
+        } else if (newTemperature > 100) {
+            return -2;
+        } else {
+            temperature = newTemperature;
+            return 0;
         }
-
-        return false;
     }
 }
