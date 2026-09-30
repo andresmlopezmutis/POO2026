@@ -11,9 +11,14 @@ public class TestThermometer {
             return;
         }
 
-        float temperature = Float.parseFloat(input);
-        int status = thermometer.setTemperature(temperature);
-        showResult(thermometer, temperature, status);
+        try {
+            float temperature = Float.parseFloat(input.trim());
+            int status = thermometer.setTemperature(temperature);
+            showResult(thermometer, temperature, status);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Entrada inválida. Debe ingresar un número válido.");
+        }
     }
 
     private static void showResult(Thermometer thermometer, float temperature,
