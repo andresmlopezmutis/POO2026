@@ -1,0 +1,212 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty members
+
+package model {
+  class Hotel {
+    - id: String {readOnly}
+    - name: String {readOnly}
+    - address: String {readOnly}
+    - totalFloors: int {readOnly}
+    - baseRoomRate: double {readOnly}
+    - singleBedRate: double {readOnly}
+    - minibarRate: double {readOnly}
+    - seaViewSurchargePercent: double {readOnly}
+    - premiumTvSurcharge: double {readOnly}
+    - floorSurchargePolicy: FloorSurchargePolicy {readOnly}
+    - rooms: Map<Integer, Room>
+    - guests: Map<String, Guest>
+    - reservations: Map<String, Reservation>
+    - receiptsByNumber: Map<String, Receipt>
+    + Hotel(id: String, name: String, address: String, totalFloors: int, baseRoomRate: double, singleBedRate: double, minibarRate: double, seaViewSurchargePercent: double, premiumTvSurcharge: double, floorSurchargePolicy: FloorSurchargePolicy)
+    + registerRoom(room: Room): void
+    + registerGuest(guest: Guest): void
+    + createReservation(id: String, guestId: String, roomNumber: int, guestCount: int, nightCount: int, requiresPremiumTv: boolean): Reservation
+    + confirmReservation(reservationId: String): Receipt
+    + cancelReservation(reservationId: String): void
+    + setRoomOperational(roomNumber: int, operational: boolean): void
+    + findReceipt(receiptNumber: String): Receipt
+    + getId(): String
+    + getName(): String
+    + getAddress(): String
+    + getTotalFloors(): int
+    + getBaseRoomRate(): double
+    + getSingleBedRate(): double
+    + getMinibarRate(): double
+    + getSeaViewSurchargePercent(): double
+    + getPremiumTvSurcharge(): double
+    + getFloorSurchargePolicy(): FloorSurchargePolicy
+    + getRooms(): List<Room>
+    + getGuests(): List<Guest>
+    + getReservations(): List<Reservation>
+  }
+
+  abstract class Room {
+    - hotel: Hotel {readOnly}
+    - roomNumber: int {readOnly}
+    - floor: int {readOnly}
+    - seaView: boolean {readOnly}
+    - premiumTv: boolean {readOnly}
+    - operational: boolean
+    # Room(hotel: Hotel, roomNumber: int, floor: int, seaView: boolean, premiumTv: boolean)
+    + getMaximumCapacity(): int
+    # calculateBedCharge(guestCount: int): double
+    + calculateNightlyCost(guestCount: int): double
+    + calculateTotalCost(guestCount: int, nightCount: int): double
+    + getAdjustedBaseRate(): double
+    # getAdditionalNightlyCharge(): double
+    + isOperational(): boolean
+    + isSeaView(): boolean
+    + hasPremiumTv(): boolean
+    + getRoomNumber(): int
+    + getFloor(): int
+    + getHotel(): Hotel
+    ~ setOperational(operational: boolean): void
+  }
+
+  class SingleRoom {
+    + SingleRoom(hotel: Hotel, roomNumber: int, floor: int, seaView: boolean, premiumTv: boolean)
+    + getMaximumCapacity(): int
+    # calculateBedCharge(guestCount: int): double
+  }
+
+  class DoubleRoom {
+    + DoubleRoom(hotel: Hotel, roomNumber: int, floor: int, seaView: boolean, premiumTv: boolean)
+    + getMaximumCapacity(): int
+    # calculateBedCharge(guestCount: int): double
+  }
+
+  class FamilyRoom {
+    - singleBedCount: int {readOnly}
+    + FamilyRoom(hotel: Hotel, roomNumber: int, floor: int, seaView: boolean, premiumTv: boolean, singleBedCount: int)
+    + getMaximumCapacity(): int
+    + getSingleBedCount(): int
+    # calculateBedCharge(guestCount: int): double
+  }
+
+  class Suite {
+    + Suite(hotel: Hotel, roomNumber: int, floor: int, seaView: boolean)
+    + getMaximumCapacity(): int
+    # calculateBedCharge(guestCount: int): double
+  }
+
+  class Guest {
+    - id: String {readOnly}
+    - fullName: String
+    - identityDocument: String
+    - phoneNumber: String
+    - email: String
+    - reservations: List<Reservation>
+    + Guest(id: String, fullName: String, identityDocument: String, phoneNumber: String, email: String)
+    + getId(): String
+    + getFullName(): String
+    + getIdentityDocument(): String
+    + getPhoneNumber(): String
+    + getEmail(): String
+    + getReservations(): List<Reservation>
+    ~ addReservation(reservation: Reservation): void
+  }
+
+  class Reservation {
+    - id: String {readOnly}
+    - guest: Guest {readOnly}
+    - room: Room {readOnly}
+    - guestCount: int {readOnly}
+    - nightCount: int {readOnly}
+    - status: ReservationStatus
+    - receipt: Receipt
+    ~ Reservation(id: String, guest: Guest, room: Room, guestCount: int, nightCount: int)
+    + getTotalCost(): double
+    + getId(): String
+    + getStatus(): ReservationStatus
+    + getReceipt(): Optional<Receipt>
+    + getGuest(): Guest
+    + getRoom(): Room
+    + getGuestCount(): int
+    + getNightCount(): int
+    ~ confirm(receiptNumber: String): Receipt
+    ~ cancel(): void
+  }
+
+  class Receipt {
+    - number: String {readOnly}
+    - reservationId: String {readOnly}
+    - guestName: String {readOnly}
+    - roomNumber: int {readOnly}
+    - nightCount: int {readOnly}
+    - totalCost: double {readOnly}
+    ~ Receipt(number: String, reservationId: String, guestName: String, roomNumber: int, nightCount: int, totalCost: double)
+    + getNumber(): String
+    + getReservationId(): String
+    + getGuestName(): String
+    + getRoomNumber(): int
+    + getNightCount(): int
+    + getTotalCost(): double
+  }
+
+  interface FloorSurchargePolicy {
+    + getSurchargePercent(floor: int): double
+  }
+
+  class StandardFloorSurchargePolicy {
+    + getSurchargePercent(floor: int): double
+  }
+
+  enum ReservationStatus {
+    PENDING
+    CONFIRMED
+    CANCELLED
+  }
+
+  Room <|-- SingleRoom
+  Room <|-- DoubleRoom
+  Room <|-- FamilyRoom
+  Room <|-- Suite
+  FloorSurchargePolicy <|.. StandardFloorSurchargePolicy
+
+  Hotel "1" *--> "0..*" Room : exclusively owns
+  Hotel "1" o--> "0..*" Guest : registers
+  Hotel "1" *--> "0..*" Reservation : manages
+  Hotel --> "1" FloorSurchargePolicy : applies
+  Guest "1" --> "0..*" Reservation : responsible for
+  Room "1" --> "0..*" Reservation : booked in
+  Reservation "1" *--> "0..1" Receipt : generates
+  Hotel ..> Receipt : indexes by number
+  Reservation --> ReservationStatus
+}
+
+package view {
+  class Main {
+    + main(args: String[]): void
+  }
+}
+
+note right of Hotel
+  Requires at least 8 floors and positive base rates.
+  Enforces unique room, guest ID/document, and reservation IDs;
+  reservation availability and suite placement.
+end note
+
+note right of Room
+  Capacity and bed charges are polymorphic.
+  Adjusted base = base rate + sea-view surcharge
+  + floor surcharge + premium-TV surcharge.
+  Validate 1 <= guests <= capacity and nights >= 1.
+end note
+
+note right of FamilyRoom
+  Exactly two double beds and 2-4 single beds.
+  Capacity = 4 + singleBedCount.
+end note
+
+note right of Suite
+  Double bed, private living room, premium TV,
+  minibar; only on either of the top two floors.
+end note
+
+note right of Reservation
+  PENDING can be confirmed or cancelled;
+  CONFIRMED can be cancelled; CANCELLED is terminal.
+  Pending/confirmed reservations occupy the room.
+end note
+@enduml
